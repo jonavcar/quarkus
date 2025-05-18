@@ -1,0 +1,10 @@
+greeting:
+  message: Hola
+
+"%dev":
+  greeting:
+    message: Desde DEV
+
+"%prod":
+  greeting:
+    message: Desde PROD
