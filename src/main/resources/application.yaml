@@ -1,0 +1,11 @@
+quarkus:
+  http:
+    port: 8080
+greeting:
+  message: "Hello from Quarkus REST"
+
+"%dev.greeting.message": "Hola DEV"
+
+"%prod":
+  greeting:
+    message: "Bienvenido PROD"
