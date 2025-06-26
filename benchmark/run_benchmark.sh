@@ -1,6 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
+# Verificar que wrk esté instalado
+if ! command -v wrk &>/dev/null; then
+    echo "Error: 'wrk' no está instalado o no está en el PATH."
+    exit 1
+fi
+
 # Configuración de parámetros del benchmark
 HOST_URL="http://localhost:8080"
 THREADS=8
@@ -13,9 +19,15 @@ RESULT_DIR="results"
 TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
 OUTPUT_FILE="${RESULT_DIR}/benchmark_${TIMESTAMP}.txt"
 
-# Crear directorio de resultados
-mkdir -p "$RESULT_DIR"
-touch "$OUTPUT_FILE"
+# Crear directorio de resultados (si no existe)
+if [ ! -d "$RESULT_DIR" ]; then
+    mkdir -p "$RESULT_DIR"
+fi
+
+# Crear archivo de salida (si no existe)
+if [ ! -f "$OUTPUT_FILE" ]; then
+    touch "$OUTPUT_FILE"
+fi
 
 # Redirigir toda la salida (stdout y stderr) con tee para pantalla y archivo
 exec > >(tee -a "$OUTPUT_FILE") 2>&1
