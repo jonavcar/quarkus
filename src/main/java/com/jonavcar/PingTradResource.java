@@ -14,7 +14,7 @@ public class PingTradResource {
 
     @GET
     public CountResponse ping() {
-        long c = searchService.countHiloOccurrences();
+        long c = searchService.searchCount();
         return new CountResponse(c);
     }
 }

@@ -16,7 +16,7 @@ public class PingVirtualResource {
     @GET
     @RunOnVirtualThread
     public CountResponse ping() {
-        long c = searchService.countHiloOccurrences();
+        long c = searchService.searchCount();
         return new CountResponse(c);
     }
 
