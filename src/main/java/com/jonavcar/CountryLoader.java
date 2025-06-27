@@ -17,11 +17,11 @@ public class CountryLoader {
 
     @PostConstruct
     void init() {
-        cargarPaises();
+        loadCountries();
     }
 
     @Transactional
-    void cargarPaises() {
+    void loadCountries() {
         Country.deleteAll();
 
         InputStream in = getClass().getResourceAsStream("/countries.csv");
