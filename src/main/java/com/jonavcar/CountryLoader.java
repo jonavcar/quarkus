@@ -1,8 +1,6 @@
 package com.jonavcar;
 
 import com.jonavcar.models.Country;
-import io.quarkus.runtime.Startup;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -11,17 +9,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-@Startup
 @ApplicationScoped
 public class CountryLoader {
 
-    @PostConstruct
-    void init() {
-        loadCountries();
-    }
-
     @Transactional
-    void loadCountries() {
+    public void loadCountries() {
         Country.deleteAll();
 
         InputStream in = getClass().getResourceAsStream("/countries.csv");

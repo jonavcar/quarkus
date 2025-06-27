@@ -3,6 +3,7 @@ package com.jonavcar;
 import com.jonavcar.models.Country;
 import com.jonavcar.repository.CountryRepository;
 import com.jonavcar.services.SearchService;
+import io.smallrye.common.annotation.Blocking;
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -26,6 +27,7 @@ public class CountryResource {
 
     @GET
     @Path("/imperative")
+    @Blocking
     public Response countImperative() {
         List<Country> countries = countryRepository.listAll();
         int countryCount = countries.size();
