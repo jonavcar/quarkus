@@ -28,24 +28,24 @@ public class CountryResource {
     @GET
     @Path("/imperative")
     public Response countImperative() {
-        List<Country> list = countryReactiveRepository.listAll().await().indefinitely();
-        int countCountry = list.size();
-        long countSearch = searchService.searchCount();
+        List<Country> countries = countryReactiveRepository.listAll().await().indefinitely();
+        int countryCount = countries.size();
+        long searchCount = searchService.searchCount();
         return Response.ok(Map.of(
-                "CountCountry", countCountry,
-                "CountSearch", countSearch
+                "countryCount", countryCount,
+                "searchCount", searchCount
         )).build();
     }
 
     @GET
-    @Path("/ping-reactive")
-    public Uni<Response> reactive() {
+    @Path("/reactive")
+    public Uni<Response> countReactive() {
         return countryReactiveRepository.listAll()
                 .flatMap(countries ->
                         Uni.createFrom().item(() -> searchService.searchCount())
-                                .map(count -> Response.ok(Map.of(
-                                        "CountCountry", countries.size(),
-                                        "CountSearch", count
+                                .map(searchCount -> Response.ok(Map.of(
+                                        "countryCount", countries.size(),
+                                        "searchCount", searchCount
                                 )).build())
                 );
     }
@@ -54,12 +54,12 @@ public class CountryResource {
     @Path("/virtual")
     @RunOnVirtualThread
     public Response countVirtual() {
-        List<Country> list = countryReactiveRepository.listAll().await().indefinitely();
-        int countCountry = list.size();
-        long countSearch = searchService.searchCount();
+        List<Country> countries = countryReactiveRepository.listAll().await().indefinitely();
+        int countryCount = countries.size();
+        long searchCount = searchService.searchCount();
         return Response.ok(Map.of(
-                "CountCountry", countCountry,
-                "CountSearch", countSearch
+                "countryCount", countryCount,
+                "searchCount", searchCount
         )).build();
     }
 }
