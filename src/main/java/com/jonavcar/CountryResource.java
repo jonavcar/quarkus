@@ -1,21 +1,51 @@
 package com.jonavcar;
 
 import com.jonavcar.models.Country;
-import jakarta.ws.rs.Consumes;
+import com.jonavcar.repository.CountryRepository;
+import com.jonavcar.services.SearchService;
+import io.smallrye.common.annotation.RunOnVirtualThread;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/countries")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class CountryResource {
 
+    @Inject
+    CountryRepository countryRepository;
+
+    @Inject
+    SearchService searchService;
+
     @GET
-    public List<Country> all() {
-        return Country.listAll();
+    @Path("/imperative")
+    public Response countImperative() {
+        List<Country> countries = countryRepository.listAll();
+        int countryCount = countries.size();
+        long searchCount = searchService.searchCount();
+        return Response.ok(Map.of(
+                "countryCount", countryCount,
+                "searchCount", searchCount
+        )).build();
+    }
+
+    @GET
+    @Path("/virtual")
+    @RunOnVirtualThread
+    public Response countVirtual() {
+        List<Country> countries = countryRepository.listAll();
+        int countryCount = countries.size();
+        long searchCount = searchService.searchCount();
+        return Response.ok(Map.of(
+                "countryCount", countryCount,
+                "searchCount", searchCount
+        )).build();
     }
 }

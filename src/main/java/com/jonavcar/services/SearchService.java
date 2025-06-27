@@ -1,5 +1,6 @@
 package com.jonavcar.services;
 
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -16,7 +17,7 @@ public class SearchService {
     @ConfigProperty(name = "hilo.resource-name", defaultValue = "file.txt")
     String resourceName;
 
-    public long countHiloOccurrences() {
+    public long searchCount() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         try (InputStream is = cl.getResourceAsStream(resourceName)) {
             if (is == null) {
@@ -35,5 +36,9 @@ public class SearchService {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    public Uni<Long> searchCountReactive() {
+        return Uni.createFrom().item(this::searchCount);
     }
 }

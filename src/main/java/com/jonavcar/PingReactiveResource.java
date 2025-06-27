@@ -17,7 +17,7 @@ public class PingReactiveResource {
     @GET
     public Uni<CountResponse> ping() {
         return Uni.createFrom().item(() -> {
-                    long c = searchService.countHiloOccurrences();
+                    long c = searchService.searchCount();
                     return new CountResponse(c);
                 })
                 .runSubscriptionOn(Infrastructure.getDefaultExecutor());
